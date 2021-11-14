@@ -129,7 +129,8 @@ def register_model(name, dataclass=None):
 
     def register_model_cls(cls):
         if name in MODEL_REGISTRY:
-            raise ValueError("Cannot register duplicate model ({})".format(name))
+            return cls
+            # raise ValueError("Cannot register duplicate model ({})".format(name))
         if not issubclass(cls, BaseFairseqModel):
             raise ValueError(
                 "Model ({}: {}) must extend BaseFairseqModel".format(name, cls.__name__)
@@ -184,15 +185,17 @@ def register_model_architecture(model_name, arch_name):
 
     def register_model_arch_fn(fn):
         if model_name not in MODEL_REGISTRY:
-            raise ValueError(
-                "Cannot register model architecture for unknown model type ({})".format(
-                    model_name
-                )
-            )
+            return fn
+            #raise ValueError(
+            #    "Cannot register model architecture for unknown model type ({})".format(
+            #        model_name
+            #    )
+            #)
         if arch_name in ARCH_MODEL_REGISTRY:
-            raise ValueError(
-                "Cannot register duplicate model architecture ({})".format(arch_name)
-            )
+            return fn
+            #raise ValueError(
+            #    "Cannot register duplicate model architecture ({})".format(arch_name)
+            #)
         if not callable(fn):
             raise ValueError(
                 "Model architecture must be callable ({})".format(arch_name)
